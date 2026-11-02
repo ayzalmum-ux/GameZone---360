@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameZone 360 - Play Games</title>
+
+<style>
+* {box-sizing:border-box;margin:0;padding:0}
+
+body {
+  font-family:Arial,sans-serif;
+  background:#0c1020;
+  color:white;
+}
+
+header {
+  padding:18px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#141a30;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.logo {font-size:24px;font-weight:bold;color:#bb91ff}
+
+nav a {
+  color:white;
+  text-decoration:none;
+  margin:0 8px;
+  font-size:14px;
+}
+
+.hero {
+  text-align:center;
+  padding:65px 15px;
+  background:linear-gradient(135deg,#25154e,#61318d,#17264c);
+}
+
+.hero h1 {font-size:clamp(30px,5vw,48px);margin-bottom:15px}
+.hero h1 span {color:#d1aaff}
+.hero p {color:#e0d6f5;line-height:1.7}
+
+.btn {
+  display:inline-block;
+  padding:13px 24px;
+  border:0;
+  border-radius:10px;
+  background:#965cff;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:15px;
+}
+
+.section {padding:40px 6%}
+.section h2 {margin-bottom:12px}
+.muted {color:#aeb8d0;line-height:1.6}
+
+.games {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:18px;
+  margin-top:25px;
+}
+
+.card {
+  background:#171e36;
+  border:1px solid #303959;
+  border-radius:16px;
+  padding:23px;
+}
+
+.card:hover {border-color:#a36aff}
+.card .emoji {font-size:43px;margin-bottom:12px}
+.card p {color:#b6bfd5;font-size:14px;line-height:1.6;margin-top:9px}
+
+.game-area {
+  display:none;
+  max-width:600px;
+  margin:35px auto;
+  padding:25px;
+  background:#171e36;
+  border:1px solid #555080;
+  border-radius:18px;
+  text-align:center;
+}
+
+.game-area h2 {margin-bottom:12px}
+
+.game-input {
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  border:2px solid #9c72ff;
+  font-size:19px;
+  text-align:center;
+  margin:15px 0;
+}
+
+.game-btn {
+  padding:12px 20px;
+  margin:5px;
+  background:#925cff;
+  color:white;
+  border:0;
+  border-radius:9px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.game-btn:disabled {opacity:.4;cursor:not-allowed}
+
+.stats {
+  display:flex;
+  justify-content:space-around;
+  gap:8px;
+  margin:20px 0;
+}
+
+.stats div {
+  flex:1;
+  padding:13px 5px;
+  background:#292746;
+  border-radius:10px;
+}
+
+.stats strong {
+  display:block;
+  color:#d2adff;
+  font-size:22px;
+}
+
+#gameMessage {
+  min-height:30px;
+  margin:15px 0;
+  color:#e3c9ff;
+  font-weight:bold;
+}
+
+.memory-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin:20px auto;
+  max-width:400px;
+}
+
+.memory-card {
+  height:75px;
+  font-size:30px;
+  background:#493174;
+  border:1px solid #9873d4;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.memory-card.matched {
+  background:#176a55;
+  border-color:#4be2a8;
+  cursor:default;
+}
+
+.math-question {
+  font-size:38px;
+  margin:25px 0;
+  color:#d2adff;
+  font-weight:bold;
+}
+
+footer {
+  padding:30px;
+  text-align:center;
+  color:#9da7c1;
+  background:#141a30;
+  margin-top:30px;
+}
+
+.back {background:#424c6d}
+
+@media(max-width:500px) {
+  nav {width:100%;display:flex;justify-content:space-between}
+  nav a {margin:0;font-size:12px}
+  .game-area {margin:20px 10px;padding:18px}
+  .memory-card {height:62px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🎮 GameZone 360</div>
+  <nav>
+    <a href="#home" onclick="showHome()">Home</a>
+    <a href="#games" onclick="showHome()">Games</a>
+    <a href="#leaderboard" onclick="showHome()">Scores</a>
+  </nav>
+</header>
+
+<div id="home">
+
+<section class="hero">
+  <h1>Welcome to <span>GameZone 360</span></h1>
+  <p>Play exciting games, challenge your brain<br>
+  and beat your best scores!</p>
+  <button class="btn" onclick="document.getElementById('games').scrollIntoView()">
+    🎮 EXPLORE GAMES
+  </button>
+</section>
+
+<section class="section" id="games">
+  <h2>🔥 Popular Games</h2>
+  <p class="muted">Choose your game and start playing!</p>
+
+  <div class="games">
+
+    <div class="card">
+      <div class="emoji">🔢</div>
+      <h3>Number Master</h3>
+      <p>Guess the secret number. Test your brain!</p>
+      <button class="game-btn" onclick="openGame('number')">▶ Play Now</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🧠</div>
+      <h3>Memory Match</h3>
+      <p>Find matching cards and test your memory.</p>
+      <button class="game-btn" onclick="openGame('memory')">▶ Play Now</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">➗</div>
+      <h3>Math Challenge</h3>
+      <p>Solve quick maths questions and earn points.</p>
+      <button class="game-btn" onclick="openGame('math')">▶ Play Now</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🔤</div>
+      <h3>Word Challenge</h3>
+      <p>Coming soon! More brain games are on the way.</p>
+      <button class="game-btn" disabled>Coming Soon</button>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="leaderboard">
+  <h2>🏆 Your Personal Best Scores</h2>
+  <div class="card">
+    <p id="bestNumber">Number Master: 0 points</p>
+    <p id="bestMemory">Memory Match: 0 points</p>
+    <p id="bestMath">Math Challenge: 0 points</p>
+    <button class="game-btn" onclick="updateScores()">Refresh Scores</button>
+  </div>
+  <p class="muted">These scores are saved on this browser, not shared across players yet.</p>
+</section>
+
+</div>
+
+<!-- NUMBER GAME -->
+
+<div class="game-area" id="numberGame">
+  <h2>🔢 Number Master</h2>
+  <p class="muted">Guess the secret number!</p>
+
+  <select id="difficulty" class="game-input" onchange="resetNumber()">
+    <option value="50">Easy: 1–50</option>
+    <option value="100">Medium: 1–100</option>
+    <option value="500">Hard: 1–500</option>
+  </select>
+
+  <input class="game-input" type="number" id="numberGuess" placeholder="Enter your guess">
+
+  <button class="game-btn" onclick="checkNumber()">Submit Guess</button>
+  <button class="game-btn back" onclick="resetNumber()">New Game</button>
+
+  <div id="gameMessage">Let's play!</div>
+
+  <div class="stats">
+    <div><strong id="nAttempts">0</strong>Attempts</div>
+    <div><strong id="nPoints">100</strong>Points</div>
+  </div>
+
+  <button class="game-btn back" onclick="showHome()">← Back to Games</button>
+</div>
+
+<!-- MEMORY GAME -->
+
+<div class="game-area" id="memoryGame">
+  <h2>🧠 Memory Match</h2>
+  <p class="muted">Match all 8 pairs of emojis!</p>
+
+  <div class="stats">
+    <div><strong id="moves">0</strong>Moves</div>
+    <div><strong id="pairs">0</strong>Pairs</div>
+  </div>
+
+  <div class="memory-grid" id="memoryGrid"></div>
+
+  <div id="memoryMessage">Find the matching pairs!</div>
+
+  <button class="game-btn" onclick="startMemory()">Restart Game</button>
+  <button class="game-btn back" onclick="showHome()">← Back to Games</button>
+</div>
+
+<!-- MATH GAME -->
+
+<div class="game-area" id="mathGame">
+  <h2>➗ Math Challenge</h2>
+  <p class="muted">Solve 10 questions. How many can you get right?</p>
+
+  <div class="stats">
+    <div><strong id="mathQ">1/10</strong>Question</div>
+    <div><strong id="mathScore">0</strong>Score</div>
+  </div>
+
+  <div class="math-question" id="mathQuestion">5 + 3 = ?</div>
+
+  <input type="number" class="game-input" id="mathAnswer" placeholder="Your answer">
+
+  <button class="game-btn" onclick="checkMath()">Submit Answer</button>
+
+  <div id="mathMessage">Good luck!</div>
+
+  <button class="game-btn back" onclick="startMath()">Restart Game</button>
+  <button class="game-btn back" onclick="showHome()">← Back to Games</button>
+</div>
+
+<footer>
+  <h3>🎮 GameZone 360</h3>
+  Play. Challenge. Improve.<br>
+  © 2026 GameZone 360
+</footer>
+
+<script>
+
+// COMMON NAVIGATION
+
+function showHome() {
+  document.getElementById("home").style.display = "block";
+
+  document.querySelectorAll(".game-area").forEach(function(game) {
+    game.style.display = "none";
+  });
+
+  updateScores();
+}
+
+function openGame(name) {
+  document.getElementById("home").style.display = "none";
+
+  document.querySelectorAll(".game-area").forEach(function(game) {
+    game.style.display = "none";
+  });
+
+  document.getElementById(name + "Game").style.display = "block";
+
+  if(name === "number") resetNumber();
+  if(name === "memory") startMemory();
+  if(name === "math") startMath();
+
+  window.scrollTo(0,0);
+}
+
+// NUMBER MASTER
+
+let secret = 0;
+let attempts = 0;
+let points = 100;
+let numberOver = false;
+
+function resetNumber() {
+  let max = Number(document.getElementById("difficulty").value);
+
+  secret = Math.floor(Math.random() * max) + 1;
+  attempts = 0;
+  points = 100;
+  numberOver = false;
+
+  document.getElementById("numberGuess").disabled = false;
+  document.getElementById("numberGuess").value = "";
+  document.getElementById("gameMessage").innerText = "Make your first guess!";
+  document.getElementById("nAttempts").innerText = 0;
+  document.getElementById("nPoints").innerText = 100;
+}
+
+function checkNumber() {
+  if(numberOver) return;
+
+  let max = Number(document.getElementById("difficulty").value);
+  let guess = Number(document.getElementById("numberGuess").value);
+  let msg = document.getElementById("gameMessage");
+
+  if(!Number.isInteger(guess) || guess < 1 || guess > max) {
+    msg.innerText = "Enter a valid number between 1 and " + max;
+    return;
+  }
+
+  attempts++;
+
+  if(guess === secret) {
+    numberOver = true;
+    msg.innerText = "🏆 Correct! You won! Secret number: " + secret;
+    document.getElementById("numberGuess").disabled = true;
+
+    saveBest("numberMasterBest", points);
+  } else {
+    points = Math.max(0, points - 10);
+
+    msg.innerText = guess > secret
+      ? "📉 Too High! Try smaller."
+      : "📈 Too Low! Try bigger.";
+  }
+
+  document.getElementById("nAttempts").innerText = attempts;
+  document.getElementById("nPoints").innerText = points;
+  document.getElementById("numberGuess").value = "";
+}
+
+// MEMORY MATCH
+
+let symbols = ["🍎","🍌","🍇","🍒","🍉","🍋","🥝","🍓"];
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let moveCount = 0;
+let pairCount = 0;
+let memoryScore = 0;
+
+function startMemory() {
+  let cards = [...symbols,...symbols].sort(() => Math.random() - 0.5);
+
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+  moveCount = 0;
+  pairCount = 0;
+  memoryScore = 0;
+
+  document.getElementById("moves").innerText = 0;
+  document.getElementById("pairs").innerText = 0;
+  document.getElementById("memoryMessage").innerText = "Find matching pairs!";
+
+  let grid = document.getElementById("memoryGrid");
+  grid.innerHTML = "";
+
+  cards.forEach(function(symbol,index) {
+    let card = document.createElement("button");
+    card.className = "memory-card";
+    card.innerText = "❓";
+    card.dataset.symbol = symbol;
+    card.dataset.index = index;
+
+    card.addEventListener("click",function() {
+      flipCard(card);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function flipCard(card) {
+  if(lockBoard || card.classList.contains("matched") ||
+     card === firstCard) return;
+
+  card.innerText = card.dataset.symbol;
+
+  if(!firstCard) {
+    firstCard = card;
+    return;
+  }
+
+  secondCard = card;
+  moveCount++;
+
+  document.getElementById("moves").innerText = moveCount;
+
+  if(firstCard.dataset.symbol === secondCard.dataset.symbol) {
+    firstCard.classList.add("matched");
+    secondCard.classList.add("matched");
+
+    firstCard = null;
+    secondCard = null;
+    pairCount++;
+
+    document.getElementById("pairs").innerText = pairCount;
+
+    if(pairCount === 8) {
+      memoryScore = Math.max(0,1000 - moveCount * 20);
+
+      document.getElementById("memoryMessage").innerText =
+        "🎉 Amazing! All pairs matched! Score: " + memoryScore;
+
+      saveBest("memoryBest",memoryScore);
+    }
+
+  } else {
+    lockBoard = true;
+
+    setTimeout(function() {
+      firstCard.innerText = "❓";
+      secondCard.innerText = "❓";
+
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+    },800);
+  }
+}
+
+// MATH CHALLENGE
+
+let correctAnswer = 0;
+let questionCount = 0;
+let mathPoints = 0;
+let mathFinished = false;
+
+function startMath() {
+  questionCount = 0;
+  mathPoints = 0;
+  mathFinished = false;
+
+  document.getElementById("mathAnswer").disabled = false;
+  document.getElementById("mathQuestion").innerText = "Ready?";
+  document.getElementById("mathMessage").innerText = "Let's begin!";
+  document.getElementById("mathScore").innerText = 0;
+
+  nextMath();
+}
+
+function nextMath() {
+  if(questionCount >= 10) {
+    mathFinished = true;
+    document.getElementById("mathQuestion").innerText = "🏆 Finished!";
+    document.getElementById("mathMessage").innerText =
+      "Your final score: " + mathPoints + " / 100";
+
+    document.getElementById("mathAnswer").disabled = true;
+    saveBest("mathBest",mathPoints);
+    return;
+  }
+
+  let a = Math.floor(Math.random() * 20) + 1;
+  let b = Math.floor(Math.random() * 20) + 1;
+  let operators = ["+","-","×"];
+  let op = operators[Math.floor(Math.random() * operators.length)];
+
+  if(op === "+") correctAnswer = a + b;
+  if(op === "-") {
+    if(b > a) [a,b] = [b,a];
+    correctAnswer = a - b;
+  }
+  if(op === "×") correctAnswer = a * b;
+
+  document.getElementById("mathQuestion").innerText =
+    a + " " + op + " " + b + " = ?";
+
+  document.getElementById("mathQ").innerText =
+    (questionCount + 1) + "/10";
+
+  document.getElementById("mathAnswer").value = "";
+}
+
+function checkMath() {
+  if(mathFinished) return;
+
+  let answer = document.getElementById("mathAnswer").value;
+  let msg = document.getElementById("mathMessage");
+
+  if(answer.trim() === "") {
+    msg.innerText = "Enter your answer first!";
+    return;
+  }
+
+  if(Number(answer) === correctAnswer) {
+    mathPoints += 10;
+    msg.innerText = "✅ Correct answer!";
+  } else {
+    msg.innerText = "❌ Wrong! Answer: " + correctAnswer;
+  }
+
+  questionCount++;
+
+  document.getElementById("mathScore").innerText = mathPoints;
+
+  setTimeout(nextMath,700);
+}
+
+// SAVE PERSONAL BEST SCORES
+
+function saveBest(key,score) {
+  let oldScore = Number(localStorage.getItem(key)) || 0;
+
+  if(score > oldScore) {
+    localStorage.setItem(key,score);
+  }
+
+  updateScores();
+}
+
+function updateScores() {
+  document.getElementById("bestNumber").innerText =
+    "Number Master: " + (localStorage.getItem("numberMasterBest") || 0) + " points";
+
+  document.getElementById("bestMemory").innerText =
+    "Memory Match: " + (localStorage.getItem("memoryBest") || 0) + " points";
+
+  document.getElementById("bestMath").innerText =
+    "Math Challenge: " + (localStorage.getItem("mathBest") || 0) + " points";
+}
+
+showHome();
+
+</script>
+
+</body>
+</html>
